@@ -9,7 +9,14 @@
 	"compatibility_date": "2025-11-20",
 	"observability": {
 		"enabled": true
-	}
+	},
+	"kv_namespaces": [
+		{
+			"binding": "FLIGHTS_KV",
+			"id": "34801c3ef2ee48cc86aaba073b9adb51",
+			"remote": true
+		}
+	]
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
