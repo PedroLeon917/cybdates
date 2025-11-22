@@ -36,4 +36,5 @@ jobs:
           NODE_ENV: production
         run: |
           npx wrangler --version
-          npx wrangler deploy --env production
+          # Deploy to the default environment defined in wrangler.jsonc
+          npx wrangler deploy
