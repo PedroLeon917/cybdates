@@ -8,23 +8,55 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    concurrency:
+      group: ci-${{ github.ref }}
+      cancel-in-progress: true
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
 
-      # Opcional: si tienes build
+      - name: Lint (if configured)
+        run: npm run lint --if-present
+
+      - name: Audit dependencies (report)
+        run: |
+          npm audit --json > audit.json || true
+        continue-on-error: true
+
+      - name: Upload audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-audit
+          path: audit.json
+
+      # Optional: build if a build script exists
       - name: Build
         run: npm run build --if-present
 
-      # Opcional: tests
-      - name: Tests
-        run: npm test --if-present
+      - name: Run tests
+        run: |
+          npm test --if-present
+
+      - name: Upload test results (if present)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-output
+          path: |
+            test-results/**/*
+            coverage/**/*

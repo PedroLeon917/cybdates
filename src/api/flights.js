@@ -8,7 +8,7 @@ export default async function flightsHandler(c) {
       try {
         const parsed = JSON.parse(data);
         return c.json(parsed);
-      } catch (e) {
+      } catch {
         // stored value isn't JSON
         return c.text(data, 200);
       }
