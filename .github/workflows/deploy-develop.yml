@@ -42,4 +42,4 @@ jobs:
         run: |
           # Wait for deployment to propagate
           sleep 2
-          curl -fS https://cybdates-develop.pedroleon917.workers.dev/health
+          curl -fS https://cybdates-develop.pleon.workers.dev/health
