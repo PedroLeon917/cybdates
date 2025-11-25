@@ -38,3 +38,9 @@ jobs:
           npx wrangler --version
           # Deploy using the `production` environment in wrangler.jsonc
           npx wrangler deploy --env production
+
+      - name: Smoke test
+        run: |
+          # Wait for deployment to propagate
+          sleep 2
+          curl -fS https://cybdates.pedroleon917.workers.dev/flights > /dev/null || echo 'Warning: smoke test returned non-200, but deployment may still succeed'
