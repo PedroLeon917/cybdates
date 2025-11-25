@@ -33,14 +33,28 @@
 
   // === Environment-Specific Overrides ===
   "env": {
-    // Deploys made from PR previews use:
-    // npx wrangler deploy --env preview
+    // Production: deployed from the `main` branch
+    "production": {
+      "name": "cybdates",
+      "kv_namespaces": [
+        { "binding": "FLIGHTS_KV", "id": "34801c3ef2ee48cc86aaba073b9adb51", "remote": true }
+      ]
+    },
+
+    // Develop: deployed from the `develop` branch
+    "develop": {
+      "name": "cybdates-develop",
+      "kv_namespaces": [
+        { "binding": "FLIGHTS_KV", "id": "34801c3ef2ee48cc86aaba073b9adb51", "remote": true }
+      ]
+    },
+
+    // Preview environment (for PR previews)
     "preview": {
-      "name": "cybdates-preview"
-      // If you want a preview KV namespace:
-      // "kv_namespaces": [
-      //   { "binding": "FLIGHTS_KV", "id": "XXXXXXXX", "remote": true }
-      // ]
+      "name": "cybdates-preview",
+      "kv_namespaces": [
+        { "binding": "FLIGHTS_KV", "id": "34801c3ef2ee48cc86aaba073b9adb51", "remote": true }
+      ]
     }
   }
 

@@ -90,5 +90,44 @@ If you'd like
 - I can revert the worker to the single-file `src/index.js` version that you said worked previously, or
 - I can change the KV key strategy or add more routes (examples: `DELETE /flights`, `GET /flights/:dep/:arr`).
 
+**Branching & Deployment Model**
+This repository is configured with three Wrangler environments and matching GitHub Actions workflows:
+
+- **`main` branch -> `production` environment**
+  - Workflow: `.github/workflows/deploy.yml`
+  - Deploys using `npx wrangler deploy --env production` and the `production` section in `wrangler.jsonc`.
+
+- **`develop` branch -> `develop` environment**
+  - Workflow: `.github/workflows/deploy-develop.yml`
+  - Deploys using `npx wrangler deploy --env develop` and the `develop` section in `wrangler.jsonc`.
+
+- **Pull request previews -> `preview` environment**
+  - The `preview` section in `wrangler.jsonc` applies when using Wrangler preview or preview workflows.
+
+Setup notes for production vs develop
+- `wrangler.jsonc` already contains `env.production`, `env.develop`, and `env.preview` sections. Each env currently references the same KV namespace id. If you want isolated KV data per environment, create separate KV namespaces in Cloudflare and update the `id` for each environment in `wrangler.jsonc`.
+
+Secrets and Permissions
+- The GitHub workflows use `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` from repository secrets. These tokens should be scoped to the minimum permissions needed for deployments. For stricter separation, you can create separate API tokens for `develop` and `production` and store them as `CLOUDFLARE_API_TOKEN_DEV` / `CLOUDFLARE_API_TOKEN_PROD`, then update the workflow environment variables accordingly.
+
+Post-deploy smoke tests (recommended)
+- Add a lightweight smoke-test step to the deploy workflows to validate a successful deployment. Example (append to the deploy job):
+
+```yaml
+- name: Smoke test
+  run: |
+    # replace with your worker URL
+    curl -fS https://your-worker.example.com/health || (echo 'smoke test failed' && exit 1)
+```
+
+CI and linting
+- The CI workflow (`.github/workflows/ci.yml`) runs lint (`npm run lint`), tests, and uploads an `audit.json` from `npm audit` as an artifact.
+- Lint is configured via `eslint.config.cjs`. Run locally with `npm run lint`.
+
+Further improvements (optional)
+- Use separate KV namespaces per environment to avoid data mixing between preview/develop/production.
+- Use GitHub OIDC to avoid storing long-lived Cloudflare API tokens in repository secrets.
+- Add Husky + lint-staged to run `eslint --fix` on staged files.
+
 License
 - MIT
