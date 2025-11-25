@@ -4,6 +4,7 @@ import flightsHandler from "./api/flights.js";
 
 const app = new Hono();
 
+app.get("/health", (c) => c.json({ status: "ok" }));
 app.post("/upload", uploadHandler);
 app.get("/flights", flightsHandler);
 
