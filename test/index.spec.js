@@ -2,19 +2,21 @@ import { env, createExecutionContext, waitOnExecutionContext, SELF } from 'cloud
 import { describe, it, expect } from 'vitest';
 import worker from '../src';
 
-describe('Hello World worker', () => {
-	it('responds with Hello World! (unit style)', async () => {
-		const request = new Request('http://example.com');
+describe('CybDates Worker', () => {
+	it('responds with ok status on /health (unit style)', async () => {
+		const request = new Request('http://example.com/health');
 		// Create an empty context to pass to `worker.fetch()`.
 		const ctx = createExecutionContext();
 		const response = await worker.fetch(request, env, ctx);
 		// Wait for all `Promise`s passed to `ctx.waitUntil()` to settle before running test assertions
 		await waitOnExecutionContext(ctx);
-		expect(await response.text()).toMatchInlineSnapshot(`"Hello World!"`);
+		const json = await response.json();
+		expect(json.status).toMatchInlineSnapshot(`"ok"`);
 	});
 
-	it('responds with Hello World! (integration style)', async () => {
-		const response = await SELF.fetch('http://example.com');
-		expect(await response.text()).toMatchInlineSnapshot(`"Hello World!"`);
+	it('responds with ok status on /health (integration style)', async () => {
+		const response = await SELF.fetch('http://example.com/health');
+		const json = await response.json();
+		expect(json.status).toMatchInlineSnapshot(`"ok"`);
 	});
 });

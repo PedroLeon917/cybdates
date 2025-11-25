@@ -22,8 +22,7 @@
   "kv_namespaces": [
     {
       "binding": "FLIGHTS_KV",
-      "id": "34801c3ef2ee48cc86aaba073b9adb51",
-      "remote": true
+      "id": "34801c3ef2ee48cc86aaba073b9adb51"
     }
   ],
 
@@ -37,7 +36,7 @@
     "production": {
       "name": "cybdates",
       "kv_namespaces": [
-        { "binding": "FLIGHTS_KV", "id": "34801c3ef2ee48cc86aaba073b9adb51", "remote": true }
+        { "binding": "FLIGHTS_KV", "id": "34801c3ef2ee48cc86aaba073b9adb51" }
       ]
     },
 
@@ -45,7 +44,7 @@
     "develop": {
       "name": "cybdates-develop",
       "kv_namespaces": [
-        { "binding": "FLIGHTS_KV", "id": "34801c3ef2ee48cc86aaba073b9adb51", "remote": true }
+        { "binding": "FLIGHTS_KV", "id": "34801c3ef2ee48cc86aaba073b9adb51" }
       ]
     },
 
@@ -53,7 +52,7 @@
     "preview": {
       "name": "cybdates-preview",
       "kv_namespaces": [
-        { "binding": "FLIGHTS_KV", "id": "34801c3ef2ee48cc86aaba073b9adb51", "remote": true }
+        { "binding": "FLIGHTS_KV", "id": "34801c3ef2ee48cc86aaba073b9adb51" }
       ]
     }
   }
