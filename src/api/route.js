@@ -9,8 +9,8 @@ export default async function routeHandler(c) {
     );
   }
 
-  const departureLower = departure.toUpperCase();
-  const arrivalLower = arrival.toUpperCase();
+  const departureUpper = departure.toUpperCase();
+  const arrivalUpper = arrival.toUpperCase();
 
   // Get flights from KV if available
   let flights = [];
@@ -28,15 +28,15 @@ export default async function routeHandler(c) {
 
   // Find matching route
   const matchingRoute = flights.find(
-    (f) => f.departure === departureLower && f.arriving === arrivalLower
+    (f) => f.departure.toUpperCase() === departureUpper && f.arriving.toUpperCase() === arrivalUpper
   );
 
   if (!matchingRoute) {
     return c.json(
       {
         error: `No flights found for route ${departure} → ${arrival}`,
-        departure: departureLower,
-        arrival: arrivalLower,
+        departure: departureUpper,
+        arrival: arrivalUpper,
       },
       404
     );
@@ -45,7 +45,6 @@ export default async function routeHandler(c) {
   return c.json({
     departure: matchingRoute.departure,
     arrival: matchingRoute.arriving,
-    dates: matchingRoute.dates,
-    count: matchingRoute.dates.length,
+    dates: matchingRoute.dates
   });
 }
