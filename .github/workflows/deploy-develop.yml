@@ -1,15 +1,15 @@
-name: Deploy to Cloudflare Workers
+name: Deploy develop to Cloudflare Workers
 
 on:
   push:
     branches:
-      - main
+      - develop
 
 jobs:
-  deploy:
+  deploy-develop:
     runs-on: ubuntu-latest
     concurrency:
-      group: deploy-${{ github.ref }}
+      group: deploy-develop-${{ github.ref }}
       cancel-in-progress: true
     permissions:
       contents: read
@@ -29,18 +29,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Deploy to production with Wrangler
+      - name: Deploy to develop with Wrangler
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          NODE_ENV: production
+          NODE_ENV: development
         run: |
           npx wrangler --version
-          # Deploy using the `production` environment in wrangler.jsonc
-          npx wrangler deploy --env production
+          npx wrangler deploy --env develop
 
       - name: Smoke test
         run: |
           # Wait for deployment to propagate
           sleep 2
-          curl -fS https://cybdates.pleon.workers.dev/health
+          curl -fS https://cybdates-develop.pleon.workers.dev/health
