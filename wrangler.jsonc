@@ -2,20 +2,16 @@
  * Wrangler Configuration
  * Docs: https://developers.cloudflare.com/workers/wrangler/configuration/
  */
-
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-
   // === Worker Identity ===
   "name": "cybdates",
   "main": "src/index.js",
-  "compatibility_date": "2025-11-20",
-
+  "compatibility_date": "2025-11-18",
   // === Logs, errors, traces ===
   "observability": {
     "enabled": true
   },
-
   // === KV Namespaces ===
   // If you only use FLIGHTS_KV in production, keep it here.
   // If you want separate preview KV, I can configure it too.
@@ -25,63 +21,62 @@
       "id": "34801c3ef2ee48cc86aaba073b9adb51"
     }
   ],
-
   // === Optional: Smart Placement ===
   // Uncomment if your worker benefits from edge locality:
   // "placement": { "mode": "smart" },
-
   // === Environment-Specific Overrides ===
   "env": {
     // Production: deployed from the `main` branch
     "production": {
       "name": "cybdates",
       "kv_namespaces": [
-        { "binding": "FLIGHTS_KV", "id": "34801c3ef2ee48cc86aaba073b9adb51" }
+        {
+          "binding": "FLIGHTS_KV",
+          "id": "34801c3ef2ee48cc86aaba073b9adb51"
+        }
       ]
     },
-
     // Develop: deployed from the `develop` branch
     "develop": {
       "name": "cybdates-develop",
       "kv_namespaces": [
-        { "binding": "FLIGHTS_KV", "id": "34801c3ef2ee48cc86aaba073b9adb51" }
+        {
+          "binding": "FLIGHTS_KV",
+          "id": "34801c3ef2ee48cc86aaba073b9adb51"
+        }
       ]
     },
-
     // Preview environment (for PR previews)
     "preview": {
       "name": "cybdates-preview",
       "kv_namespaces": [
-        { "binding": "FLIGHTS_KV", "id": "34801c3ef2ee48cc86aaba073b9adb51" }
+        {
+          "binding": "FLIGHTS_KV",
+          "id": "34801c3ef2ee48cc86aaba073b9adb51"
+        }
       ]
     }
   }
-
   /**
    * Below are sections that you can enable as your worker grows.
    * They are left commented intentionally.
    */
-
   // === Environment Variables (non-secret) ===
   // "vars": {
   //   "API_VERSION": "v1"
   // }
-
   // === Secrets ===
   // Store using:
   // wrangler secret put SECRET_NAME
-
   // === Static Assets (if serving a UI) ===
   // "assets": {
   //   "directory": "./public/",
   //   "binding": "ASSETS"
   // }
-
   // === Durability, R2, Queues, D1, etc. ===
   // "r2_buckets": [...]
   // "d1_databases": [...]
   // "queues": [...]
-
   // === Inter-service Communication ===
   // "services": [
   //   { "binding": "ANOTHER_WORKER", "service": "my-other-worker" }
